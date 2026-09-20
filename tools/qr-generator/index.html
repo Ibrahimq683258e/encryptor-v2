@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Free QR Code Generator – Text, URL, & WiFi QR Codes | Cipher</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#111317">
+  <meta name="robots" content="index, follow">
+  <meta name="description" content="Generate custom QR codes for plain text, website URLs, and WiFi network logins. Download high-resolution PNG QR codes 100% client-side.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Free QR Code Generator – Cipher">
+  <meta property="og:description" content="Generate custom QR codes for text, URLs, and WiFi credentials. Download PNG outputs locally.">
+  <meta property="og:image" content="/images/Cipher.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/images/cipher-favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    .tool-card-container {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    .qr-type-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .qr-tab-btn {
+      flex: 1;
+      padding: 10px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      color: var(--text-2);
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.2s ease;
+    }
+
+    .qr-tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .qr-flex-layout {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .qr-inputs {
+      flex: 1;
+      min-width: 280px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .qr-output-card {
+      width: 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 24px;
+      margin: 0 auto;
+    }
+
+    #qrcodeCanvas {
+      padding: 12px;
+      background: #ffffff;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .step-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-card);
+      padding: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .step-num {
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .how-to-section, .faq-section-tool {
+      margin-top: 60px;
+    }
+
+    .form-input-box {
+      width: 100%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--font-sans);
+      padding: 12px 14px;
+      font-size: 14px;
+      border-radius: var(--radius-control);
+    }
+
+    .form-input-box:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: var(--surface-3);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="nav-brand">
+        <span class="nav-brand-media" aria-hidden="true">
+          <img src="/images/Cipher.png" alt="Cipher Logo">
+        </span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navLinks">
+        <span class="menu-toggle-label">Menu</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/">Home</a></li>
+        <li><a href="/#security-tools">Security Tools</a></li>
+        <li><a href="/#file-tools">File Tools</a></li>
+        <li><button class="theme-toggle-btn" title="Toggle Theme" type="button"></button></li>
+        <li>
+          <a href="/tools/encrypt/" class="btn-nav">
+            Protect File
+            <svg class="protect-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v12" /><path d="m7 10 5 5 5-5" /><path d="M5 21h14" />
+            </svg>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Top Ad Placeholder -->
+  <div class="container" style="margin-top: 80px;">
+    <div class="ad-slot">Ad Here</div>
+  </div>
+
+  <!-- Main Tool Container -->
+  <main class="section">
+    <div class="container">
+      <div class="section-header">
+        <h1 class="section-title">QR Code Generator</h1>
+        <p class="section-sub">Generate custom QR codes for website URLs, plain text, and automatic WiFi network connections.</p>
+      </div>
+
+      <div class="tool-card-container">
+        <div class="feature-card" style="padding: 32px;">
+
+          <!-- Mode Tabs -->
+          <div class="qr-type-tabs">
+            <button class="qr-tab-btn active" id="tabURL" type="button">Website URL</button>
+            <button class="qr-tab-btn" id="tabText" type="button">Plain Text</button>
+            <button class="qr-tab-btn" id="tabWifi" type="button">WiFi Network</button>
+          </div>
+
+          <div class="qr-flex-layout">
+
+            <!-- Inputs Area -->
+            <div class="qr-inputs">
+
+              <!-- URL Form -->
+              <div id="formURL">
+                <label class="field-label">Website URL</label>
+                <input type="url" id="qrUrlInput" class="form-input-box" placeholder="https://example.com" value="https://example.com">
+              </div>
+
+              <!-- Text Form -->
+              <div id="formText" style="display: none;">
+                <label class="field-label">Text Content</label>
+                <textarea id="qrTextInput" class="form-input-box" style="height: 100px;" placeholder="Type any text here..."></textarea>
+              </div>
+
+              <!-- WiFi Form -->
+              <div id="formWifi" style="display: none; display: flex; flex-direction: column; gap: 12px;">
+                <div>
+                  <label class="field-label">Network Name (SSID)</label>
+                  <input type="text" id="wifiSsid" class="form-input-box" placeholder="MyHomeWiFi">
+                </div>
+                <div>
+                  <label class="field-label">Password</label>
+                  <input type="password" id="wifiPassword" class="form-input-box" placeholder="WiFi Password">
+                </div>
+                <div>
+                  <label class="field-label">Encryption Type</label>
+                  <select id="wifiEncryption" class="form-input-box">
+                    <option value="WPA">WPA/WPA2/WPA3</option>
+                    <option value="WEP">WEP</option>
+                    <option value="nopass">None (Open)</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Output Card Area -->
+            <div class="qr-output-card">
+              <div id="qrcodeCanvas"></div>
+              <button class="btn-primary" id="btnDownloadQR" type="button" style="padding: 10px 18px; font-size: 12px;">Download PNG</button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Tool Ad Placeholder -->
+      <div class="ad-slot" style="margin-top: 40px;">Ad Here</div>
+
+      <!-- How to Use Section -->
+      <section class="how-to-section">
+        <div class="section-header">
+          <h2 class="section-title" style="font-size: 24px;">How to Use the QR Code Generator</h2>
+          <div class="section-divider"></div>
+        </div>
+        <div class="grid-3">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div>
+              <h3 style="font-size: 16px; margin-bottom: 4px; color: #fff;">Choose Category</h3>
+              <p style="font-size: 13.5px; color: var(--text-2);">Select URL, Plain Text, or WiFi Network connection mode.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div>
+              <h3 style="font-size: 16px; margin-bottom: 4px; color: #fff;">Enter Payload</h3>
+              <p style="font-size: 13.5px; color: var(--text-2);">Fill in your web link, text notes, or network credentials.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div>
+              <h3 style="font-size: 16px; margin-bottom: 4px; color: #fff;">Download PNG</h3>
+              <p style="font-size: 13.5px; color: var(--text-2);">Click 'Download PNG' to save a clean, high-resolution QR image file.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section class="faq-section-tool">
+        <div class="section-header">
+          <h2 class="section-title" style="font-size: 24px;">Frequently Asked Questions</h2>
+          <div class="section-divider"></div>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item" open>
+            <summary>Do generated QR codes expire?</summary>
+            <div class="faq-answer"><p>No. These are static QR codes that encode your data directly into the matrix pattern without third-party redirect links. They never expire.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>How does a WiFi QR code work?</summary>
+            <div class="faq-answer"><p>WiFi QR codes follow the standard `WIFI:S:ssid;T:type;P:password;;` format. When scanned by modern iOS or Android smartphones, the device prompts to join the network automatically.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Are my WiFi passwords uploaded to a server?</summary>
+            <div class="faq-answer"><p>No. All QR matrix calculations happen purely inside your browser. No data leaves your machine.</p></div>
+          </details>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer Ad Placeholder -->
+  <div class="container">
+    <div class="ad-slot">Ad Here</div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container" style="display: flex; flex-direction: column; align-items: center; gap: 16px;">
+      <div style="display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; font-weight: 600;">
+        <a href="/about/" style="color: var(--text-2);">About Us</a>
+        <a href="/privacy/" style="color: var(--text-2);">Privacy Policy</a>
+        <a href="/contact/" style="color: var(--text-2);">Contact Us</a>
+        <a href="/terms/" style="color: var(--text-2);">Terms of Service</a>
+      </div>
+      <p>&copy; Cipher – Free Online Security & File Tools. 100% Client-Side Executable.</p>
+    </div>
+  </footer>
+
+  <script src="/vendor/qrcode.min.js"></script>
+  <script src="/js/common.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tabURL = document.getElementById('tabURL');
+      const tabText = document.getElementById('tabText');
+      const tabWifi = document.getElementById('tabWifi');
+
+      const formURL = document.getElementById('formURL');
+      const formText = document.getElementById('formText');
+      const formWifi = document.getElementById('formWifi');
+
+      const qrUrlInput = document.getElementById('qrUrlInput');
+      const qrTextInput = document.getElementById('qrTextInput');
+      const wifiSsid = document.getElementById('wifiSsid');
+      const wifiPassword = document.getElementById('wifiPassword');
+      const wifiEncryption = document.getElementById('wifiEncryption');
+
+      const qrcodeCanvas = document.getElementById('qrcodeCanvas');
+      const btnDownloadQR = document.getElementById('btnDownloadQR');
+
+      let currentMode = 'url';
+      let qrcodeObj = null;
+
+      function renderQRCode() {
+        let payload = '';
+
+        if (currentMode === 'url') {
+          payload = qrUrlInput.value.trim() || 'https://example.com';
+        } else if (currentMode === 'text') {
+          payload = qrTextInput.value.trim() || 'Cipher Security Tools';
+        } else if (currentMode === 'wifi') {
+          const ssid = wifiSsid.value.trim();
+          const pass = wifiPassword.value;
+          const enc = wifiEncryption.value;
+          payload = `WIFI:S:${ssid};T:${enc};P:${pass};;`;
+        }
+
+        qrcodeCanvas.innerHTML = '';
+        qrcodeObj = new QRCode(qrcodeCanvas, {
+          text: payload,
+          width: 180,
+          height: 180,
+          colorDark: "#111317",
+          colorLight: "#ffffff",
+          correctLevel: QRCode.CorrectLevel.H
+        });
+      }
+
+      tabURL.addEventListener('click', () => {
+        currentMode = 'url';
+        tabURL.classList.add('active');
+        tabText.classList.remove('active');
+        tabWifi.classList.remove('active');
+        formURL.style.display = 'block';
+        formText.style.display = 'none';
+        formWifi.style.display = 'none';
+        renderQRCode();
+      });
+
+      tabText.addEventListener('click', () => {
+        currentMode = 'text';
+        tabText.classList.add('active');
+        tabURL.classList.remove('active');
+        tabWifi.classList.remove('active');
+        formText.style.display = 'block';
+        formURL.style.display = 'none';
+        formWifi.style.display = 'none';
+        renderQRCode();
+      });
+
+      tabWifi.addEventListener('click', () => {
+        currentMode = 'wifi';
+        tabWifi.classList.add('active');
+        tabURL.classList.remove('active');
+        tabText.classList.remove('active');
+        formWifi.style.display = 'flex';
+        formURL.style.display = 'none';
+        formText.style.display = 'none';
+        renderQRCode();
+      });
+
+      qrUrlInput.addEventListener('input', renderQRCode);
+      qrTextInput.addEventListener('input', renderQRCode);
+      wifiSsid.addEventListener('input', renderQRCode);
+      wifiPassword.addEventListener('input', renderQRCode);
+      wifiEncryption.addEventListener('change', renderQRCode);
+
+      btnDownloadQR.addEventListener('click', () => {
+        const img = qrcodeCanvas.querySelector('img');
+        const canvas = qrcodeCanvas.querySelector('canvas');
+        let src = '';
+        if (img && img.src) src = img.src;
+        else if (canvas) src = canvas.toDataURL("image/png");
+
+        if (src) {
+          const a = document.createElement('a');
+          a.href = src;
+          a.download = `cipher-qr-${currentMode}.png`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        }
+      });
+
+      renderQRCode();
+    });
+  </script>
+</body>
+
+</html>

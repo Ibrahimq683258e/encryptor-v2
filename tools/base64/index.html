@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Base64 Encoder & Decoder – Text & Image to Base64 | Cipher</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#111317">
+  <meta name="robots" content="index, follow">
+  <meta name="description" content="Encode and decode text strings to Base64 and convert image files into Base64 Data URI strings 100% client-side in your browser.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Base64 Encoder & Decoder – Cipher">
+  <meta property="og:description" content="Convert text and images to Base64 data strings offline with zero server uploads.">
+  <meta property="og:image" content="/images/Cipher.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/images/cipher-favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    .tool-card-container {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    .base64-mode-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .base64-mode-btn {
+      flex: 1;
+      padding: 10px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      color: var(--text-2);
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.2s ease;
+    }
+
+    .base64-mode-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .text-area-box {
+      width: 100%;
+      min-height: 140px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-control);
+      color: var(--text);
+      font-family: var(--font-mono);
+      padding: 14px;
+      font-size: 14px;
+      margin-bottom: 16px;
+      resize: vertical;
+    }
+
+    .text-area-box:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: var(--surface-3);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .btn-group button {
+      flex: 1;
+    }
+
+    .img-preview {
+      max-width: 100%;
+      max-height: 200px;
+      border-radius: 8px;
+      margin-top: 12px;
+      display: none;
+      border: 1px solid var(--border);
+    }
+
+    .step-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-card);
+      padding: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .step-num {
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .how-to-section, .faq-section-tool {
+      margin-top: 60px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="nav-brand">
+        <span class="nav-brand-media" aria-hidden="true">
+          <img src="/images/Cipher.png" alt="Cipher Logo">
+        </span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navLinks">
+        <span class="menu-toggle-label">Menu</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/">Home</a></li>
+        <li><a href="/#security-tools">Security Tools</a></li>
+        <li><a href="/#file-tools">File Tools</a></li>
+        <li><button class="theme-toggle-btn" title="Toggle Theme" type="button"></button></li>
+        <li>
+          <a href="/tools/encrypt/" class="btn-nav">
+            Protect File
+            <svg class="protect-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v12" /><path d="m7 10 5 5 5-5" /><path d="M5 21h14" />
+            </svg>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Top Ad Placeholder -->
+  <div class="container" style="margin-top: 80px;">
+    <div class="ad-slot">Ad Here</div>
+  </div>
+
+  <!-- Main Tool Container -->
+  <main class="section">
+    <div class="container">
+      <div class="section-header">
+        <h1 class="section-title">Base64 Encoder & Decoder</h1>
+        <p class="section-sub">Convert text to Base64, decode Base64 back to original text, or convert images to Data URL strings.</p>
+      </div>
+
+      <div class="tool-card-container">
+        <div class="feature-card" style="padding: 32px;">
+
+          <!-- Mode Tabs -->
+          <div class="base64-mode-tabs">
+            <button class="base64-mode-btn active" id="tabTextMode" type="button">Text Converter</button>
+            <button class="base64-mode-btn" id="tabImageMode" type="button">Image to Base64</button>
+          </div>
+
+          <!-- TEXT SECTION -->
+          <div id="textSection">
+            <label class="field-label">Input Text or Base64</label>
+            <textarea id="base64InputText" class="text-area-box" placeholder="Enter plain text to encode or Base64 string to decode..."></textarea>
+
+            <div class="btn-group">
+              <button class="btn-primary" id="btnEncodeText" type="button">Encode to Base64</button>
+              <button class="btn-ghost" id="btnDecodeText" type="button" style="margin-top:0;">Decode from Base64</button>
+            </div>
+
+            <label class="field-label">Output Result</label>
+            <textarea id="base64OutputText" class="text-area-box" readonly placeholder="Output will appear here..."></textarea>
+
+            <button class="btn-ghost" id="btnCopyTextResult" type="button" style="margin-top:0;">Copy Output</button>
+          </div>
+
+          <!-- IMAGE SECTION -->
+          <div id="imageSection" style="display: none;">
+            <div class="dropzone" id="imgDropzone" style="margin-bottom: 20px;">
+              <div class="dz-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                  <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+              </div>
+              <div class="dz-title" id="imgDropTitle">Drop an image here</div>
+              <div class="dz-sub">or <b>click to browse</b> (PNG, JPEG, WebP, SVG)</div>
+              <input type="file" id="imgFileInput" accept="image/*" style="display: none;">
+            </div>
+
+            <center><img id="imagePreview" class="img-preview" alt="Image Preview"></center>
+
+            <div style="margin-top: 20px;">
+              <label class="field-label">Base64 Data URI Output</label>
+              <textarea id="base64ImageOutput" class="text-area-box" readonly placeholder="Base64 Data URI will appear here..."></textarea>
+              <button class="btn-primary" id="btnCopyImageBase64" type="button">Copy Base64 String</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Tool Ad Placeholder -->
+      <div class="ad-slot" style="margin-top: 40px;">Ad Here</div>
+
+      <!-- How to Use Section -->
+      <section class="how-to-section">
+        <div class="section-header">
+          <h2 class="section-title" style="font-size: 24px;">How to Use the Base64 Converter</h2>
+          <div class="section-divider"></div>
+        </div>
+        <div class="grid-3">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div>
+              <h3 style="font-size: 16px; margin-bottom: 4px; color: #fff;">Select Mode</h3>
+              <p style="font-size: 13.5px; color: var(--text-2);">Switch between Text Converter and Image to Base64 Data URI modes.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div>
+              <h3 style="font-size: 16px; margin-bottom: 4px; color: #fff;">Enter Input or Image</h3>
+              <p style="font-size: 13.5px; color: var(--text-2);">Type text or drop an image file into the drag-and-drop file upload zone.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div>
+              <h3 style="font-size: 16px; margin-bottom: 4px; color: #fff;">Encode & Copy</h3>
+              <p style="font-size: 13.5px; color: var(--text-2);">Click 'Encode' or 'Copy' to retrieve the computed Base64 string instantly.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section class="faq-section-tool">
+        <div class="section-header">
+          <h2 class="section-title" style="font-size: 24px;">Frequently Asked Questions</h2>
+          <div class="section-divider"></div>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item" open>
+            <summary>What is Base64 encoding used for?</summary>
+            <div class="faq-answer"><p>Base64 encoding converts binary data into ASCII text representation. It is widely used in web development for embedding inline images in CSS/HTML and transmitting binary payloads over text-based protocols.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Is Base64 encoding a form of encryption?</summary>
+            <div class="faq-answer"><p>No. Base64 is an encoding format, not encryption. Anyone can decode Base64 data. If you need confidential encryption, use our AES-256 File Encryptor tool.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Are my images or text uploaded anywhere?</summary>
+            <div class="faq-answer"><p>No. All text string and image file reader conversions occur locally in your browser DOM.</p></div>
+          </details>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer Ad Placeholder -->
+  <div class="container">
+    <div class="ad-slot">Ad Here</div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container" style="display: flex; flex-direction: column; align-items: center; gap: 16px;">
+      <div style="display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; font-weight: 600;">
+        <a href="/about/" style="color: var(--text-2);">About Us</a>
+        <a href="/privacy/" style="color: var(--text-2);">Privacy Policy</a>
+        <a href="/contact/" style="color: var(--text-2);">Contact Us</a>
+        <a href="/terms/" style="color: var(--text-2);">Terms of Service</a>
+      </div>
+      <p>&copy; Cipher – Free Online Security & File Tools. 100% Client-Side Executable.</p>
+    </div>
+  </footer>
+
+  <script src="/js/common.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tabTextMode = document.getElementById('tabTextMode');
+      const tabImageMode = document.getElementById('tabImageMode');
+      const textSection = document.getElementById('textSection');
+      const imageSection = document.getElementById('imageSection');
+
+      const base64InputText = document.getElementById('base64InputText');
+      const base64OutputText = document.getElementById('base64OutputText');
+      const btnEncodeText = document.getElementById('btnEncodeText');
+      const btnDecodeText = document.getElementById('btnDecodeText');
+      const btnCopyTextResult = document.getElementById('btnCopyTextResult');
+
+      const imgDropzone = document.getElementById('imgDropzone');
+      const imgFileInput = document.getElementById('imgFileInput');
+      const imgDropTitle = document.getElementById('imgDropTitle');
+      const imagePreview = document.getElementById('imagePreview');
+      const base64ImageOutput = document.getElementById('base64ImageOutput');
+      const btnCopyImageBase64 = document.getElementById('btnCopyImageBase64');
+
+      tabTextMode.addEventListener('click', () => {
+        tabTextMode.classList.add('active');
+        tabImageMode.classList.remove('active');
+        textSection.style.display = 'block';
+        imageSection.style.display = 'none';
+      });
+
+      tabImageMode.addEventListener('click', () => {
+        tabImageMode.classList.add('active');
+        tabTextMode.classList.remove('active');
+        imageSection.style.display = 'block';
+        textSection.style.display = 'none';
+      });
+
+      // Text UTF-8 safe Base64 encoding
+      btnEncodeText.addEventListener('click', () => {
+        const str = base64InputText.value;
+        if (!str) {
+          base64OutputText.value = '';
+          return;
+        }
+        try {
+          const bytes = new TextEncoder().encode(str);
+          let bin = '';
+          bytes.forEach(b => bin += String.fromCharCode(b));
+          base64OutputText.value = btoa(bin);
+        } catch (e) {
+          base64OutputText.value = 'Error encoding string to Base64';
+        }
+      });
+
+      btnDecodeText.addEventListener('click', () => {
+        const b64 = base64InputText.value.trim();
+        if (!b64) {
+          base64OutputText.value = '';
+          return;
+        }
+        try {
+          const bin = atob(b64);
+          const bytes = new Uint8Array(bin.length);
+          for (let i = 0; i < bin.length; i++) {
+            bytes[i] = bin.charCodeAt(i);
+          }
+          base64OutputText.value = new TextDecoder().decode(bytes);
+        } catch (e) {
+          base64OutputText.value = 'Invalid Base64 string';
+        }
+      });
+
+      btnCopyTextResult.addEventListener('click', () => {
+        if (base64OutputText.value) {
+          navigator.clipboard.writeText(base64OutputText.value).then(() => {
+            const orig = btnCopyTextResult.textContent;
+            btnCopyTextResult.textContent = 'Copied!';
+            setTimeout(() => btnCopyTextResult.textContent = orig, 1500);
+          });
+        }
+      });
+
+      // Image to Base64
+      function processImageFile(file) {
+        if (!file || !file.type.startsWith('image/')) return;
+        imgDropTitle.textContent = file.name;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const dataUrl = e.target.result;
+          base64ImageOutput.value = dataUrl;
+          imagePreview.src = dataUrl;
+          imagePreview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+
+      imgDropzone.addEventListener('click', () => imgFileInput.click());
+      imgFileInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) processImageFile(e.target.files[0]);
+      });
+
+      ['dragenter', 'dragover'].forEach(evt => {
+        imgDropzone.addEventListener(evt, (e) => {
+          e.preventDefault();
+          imgDropzone.classList.add('drag');
+        });
+      });
+
+      ['dragleave', 'drop'].forEach(evt => {
+        imgDropzone.addEventListener(evt, (e) => {
+          e.preventDefault();
+          imgDropzone.classList.remove('drag');
+        });
+      });
+
+      imgDropzone.addEventListener('drop', (e) => {
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+          processImageFile(e.dataTransfer.files[0]);
+        }
+      });
+
+      btnCopyImageBase64.addEventListener('click', () => {
+        if (base64ImageOutput.value) {
+          navigator.clipboard.writeText(base64ImageOutput.value).then(() => {
+            const orig = btnCopyImageBase64.textContent;
+            btnCopyImageBase64.textContent = 'Copied!';
+            setTimeout(() => btnCopyImageBase64.textContent = orig, 1500);
+          });
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
