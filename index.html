@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Cipher – Free Online Security & File Tools</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#111317">
+  <meta name="robots" content="index, follow">
+  <meta name="description" content="Cipher is a suite of free, fast, 100% client-side online security and file tools. Encrypt files, generate strong passwords, compute hashes, convert Base64, build QR codes, compress images, and merge PDFs directly in your browser.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Cipher – Free Online Security & File Tools">
+  <meta property="og:description" content="Fast, secure, 100% client-side online security & file tools hub. Zero file uploads, zero server tracking.">
+  <meta property="og:image" content="images/Cipher.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Cipher – Free Online Security & File Tools">
+  <meta name="twitter:description" content="Fast, secure, browser-based online tools for security and file manipulation.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="images/cipher-favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* Tools Hub Grid Styles */
+    .dashboard-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 40px;
+      align-items: center;
+    }
+
+    .search-bar-wrap {
+      width: min(100%, 560px);
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 15px;
+      padding: 14px 20px 14px 48px;
+      border-radius: var(--radius-pill);
+      transition: all 0.2s ease;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: var(--surface-3);
+      box-shadow: 0 0 0 3px var(--primary-dim);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-3);
+      pointer-events: none;
+    }
+
+    .category-tabs {
+      display: flex;
+      gap: 8px;
+      background: var(--surface-2);
+      padding: 5px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-soft);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-2);
+      padding: 8px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(240, 95, 64, 0.3);
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .tool-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--primary-line);
+      box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    .tool-card-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .tool-card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: var(--primary-dim);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .tool-card-icon svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .tool-card-category {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--primary);
+      margin-bottom: 2px;
+      font-weight: 600;
+    }
+
+    .tool-card-title {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.3;
+    }
+
+    .tool-card-desc {
+      font-size: 13.5px;
+      color: var(--text-2);
+      line-height: 1.6;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+
+    .tool-card-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .tool-card:hover .tool-card-action {
+      color: var(--primary-hover);
+    }
+
+    .tool-card-action svg {
+      transition: transform 0.2s ease;
+    }
+
+    .tool-card:hover .tool-card-action svg {
+      transform: translateX(4px);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Sticky Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="nav-brand">
+        <span class="nav-brand-media" aria-hidden="true">
+          <img src="images/Cipher.png" alt="Cipher Logo">
+        </span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navLinks">
+        <span class="menu-toggle-label">Menu</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/">Home</a></li>
+        <li><a href="#security-tools">Security Tools</a></li>
+        <li><a href="#file-tools">File Tools</a></li>
+        <li><button class="theme-toggle-btn" title="Toggle Theme" type="button"></button></li>
+        <li>
+          <a href="/tools/encrypt/" class="btn-nav">
+            Protect File
+            <svg class="protect-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v12" /><path d="m7 10 5 5 5-5" /><path d="M5 21h14" />
+            </svg>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Top Ad Slot Placeholder -->
+  <div class="container" style="margin-top: 80px;">
+    <div class="ad-slot">Ad Here</div>
+  </div>
+
+  <!-- Hero Section -->
+  <header class="masthead" style="padding-top: 40px;">
+    <div class="container">
+      <h1 class="masthead-title">Cipher – Free Online Security & File Tools</h1>
+      <p class="masthead-subtitle">Fast, Secure, Works in your browser. Complete client-side utilities with zero file uploads and zero server tracking.</p>
+    </div>
+  </header>
+
+  <!-- Dashboard Section -->
+  <section class="section" id="tools-dashboard">
+    <div class="container">
+
+      <!-- Search & Filters -->
+      <div class="dashboard-controls">
+        <div class="search-bar-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="toolSearch" class="search-input" placeholder="Search security or file tools...">
+        </div>
+
+        <div class="category-tabs" id="categoryTabs">
+          <button class="tab-btn active" data-category="all">All Tools</button>
+          <button class="tab-btn" data-category="security">Security Tools</button>
+          <button class="tab-btn" data-category="file">File Tools</button>
+        </div>
+      </div>
+
+      <!-- Tools Grid -->
+      <div class="tools-grid" id="toolsGrid">
+
+        <!-- SECURITY TOOLS -->
+        <!-- 1. Password Generator -->
+        <a href="/tools/password-generator/" class="tool-card" data-category="security" data-name="password generator random custom strength">
+          <div class="tool-card-header">
+            <div class="tool-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="tool-card-category">Security Tool</div>
+              <h2 class="tool-card-title">Password Generator</h2>
+            </div>
+          </div>
+          <p class="tool-card-desc">Generate cryptographically secure random passwords with customizable length, symbols, numbers, and strength indicator.</p>
+          <div class="tool-card-action">
+            Open Tool
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
+        </a>
+
+        <!-- 2. Hash Generator -->
+        <a href="/tools/hash-generator/" class="tool-card" data-category="security" data-name="hash generator md5 sha1 sha256 sha512 checksum checksums">
+          <div class="tool-card-header">
+            <div class="tool-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="4" y1="9" x2="20" y2="9"></line>
+                <line x1="4" y1="15" x2="20" y2="15"></line>
+                <line x1="10" y1="3" x2="8" y2="21"></line>
+                <line x1="16" y1="3" x2="14" y2="21"></line>
+              </svg>
+            </div>
+            <div>
+              <div class="tool-card-category">Security Tool</div>
+              <h2 class="tool-card-title">Hash Generator</h2>
+            </div>
+          </div>
+          <p class="tool-card-desc">Compute MD5, SHA-1, SHA-256, and SHA-512 cryptographic checksums instantly for plain text or local files.</p>
+          <div class="tool-card-action">
+            Open Tool
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
+        </a>
+
+        <!-- 3. Base64 Encoder/Decoder -->
+        <a href="/tools/base64/" class="tool-card" data-category="security" data-name="base64 encoder decoder text image base64 convert">
+          <div class="tool-card-header">
+            <div class="tool-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+              </svg>
+            </div>
+            <div>
+              <div class="tool-card-category">Security Tool</div>
+              <h2 class="tool-card-title">Base64 Converter</h2>
+            </div>
+          </div>
+          <p class="tool-card-desc">Encode or decode text into Base64 format and convert image files directly into Base64 data strings.</p>
+          <div class="tool-card-action">
+            Open Tool
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
+        </a>
+
+        <!-- 4. QR Code Generator -->
+        <a href="/tools/qr-generator/" class="tool-card" data-category="security" data-name="qr code generator qr builder wifi text url link png">
+          <div class="tool-card-header">
+            <div class="tool-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+            </div>
+            <div>
+              <div class="tool-card-category">Security Tool</div>
+              <h2 class="tool-card-title">QR Code Generator</h2>
+            </div>
+          </div>
+          <p class="tool-card-desc">Create custom QR codes for plain text, website URLs, and WiFi network setups with downloadable PNG outputs.</p>
+          <div class="tool-card-action">
+            Open Tool
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
+        </a>
+
+        <!-- FILE TOOLS -->
+        <!-- 5. Image Compressor -->
+        <a href="/tools/image-compressor/" class="tool-card" data-category="file" data-name="image compressor photo resize shrink png jpg webp">
+          <div class="tool-card-header">
+            <div class="tool-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+            </div>
+            <div>
+              <div class="tool-card-category">File Tool</div>
+              <h2 class="tool-card-title">Image Compressor</h2>
+            </div>
+          </div>
+          <p class="tool-card-desc">Reduce JPEG, PNG, and WebP file sizes with an interactive quality slider and real-time before/after comparison.</p>
+          <div class="tool-card-action">
+            Open Tool
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
+        </a>
+
+        <!-- 6. Merge PDF -->
+        <a href="/tools/merge-pdf/" class="tool-card" data-category="file" data-name="merge pdf combine pdf join pdf files document">
+          <div class="tool-card-header">
+            <div class="tool-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="12" y1="18" x2="12" y2="12"></line>
+                <line x1="9" y1="15" x2="15" y2="15"></line>
+              </svg>
+            </div>
+            <div>
+              <div class="tool-card-category">File Tool</div>
+              <h2 class="tool-card-title">Merge PDF</h2>
+            </div>
+          </div>
+          <p class="tool-card-desc">Combine multiple PDF files into a single document with drag-and-drop page ordering directly in your browser.</p>
+          <div class="tool-card-action">
+            Open Tool
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
+        </a>
+
+        <!-- 7. AES-256 File Encryptor -->
+        <a href="/tools/encrypt/" class="tool-card" data-category="file" data-name="encrypt decrypt file cipher aes256 aes gcm pbkdf2 password protect">
+          <div class="tool-card-header">
+            <div class="tool-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="tool-card-category">File Tool</div>
+              <h2 class="tool-card-title">File Encryptor (.cipher)</h2>
+            </div>
+          </div>
+          <p class="tool-card-desc">Protect files with password-authenticated AES-256-GCM encryption and PBKDF2 (250,000 iterations).</p>
+          <div class="tool-card-action">
+            Open Tool
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Middle Ad Slot Placeholder -->
+  <div class="container">
+    <div class="ad-slot">Ad Here</div>
+  </div>
+
+  <!-- Why Choose Cipher Section -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">100% Client-Side Privacy</h2>
+        <div class="section-divider"></div>
+        <p class="section-sub">Cipher tools process all data directly inside your web browser. No server uploads, no cloud logs, and no privacy compromises.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+          </div>
+          <h3 class="feature-title">Zero Data Uploads</h3>
+          <p class="feature-desc">Your files and credentials never pass over a network connection. All computations use standard Web APIs locally.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+          </div>
+          <h3 class="feature-title">Instant Performance</h3>
+          <p class="feature-desc">Experience lightning-fast processing powered directly by your device's CPU and memory without network latency.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+              <line x1="8" y1="21" x2="16" y2="21" />
+              <line x1="12" y1="17" x2="12" y2="21" />
+            </svg>
+          </div>
+          <h3 class="feature-title">Offline Supported</h3>
+          <p class="feature-desc">Cipher utilizes Progressive Web App (PWA) caching so you can use all security tools even when completely offline.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom Ad Slot Placeholder -->
+  <div class="container">
+    <div class="ad-slot">Ad Here</div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container" style="display: flex; flex-direction: column; align-items: center; gap: 16px;">
+      <div style="display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; font-weight: 600;">
+        <a href="/about/" style="color: var(--text-2);">About Us</a>
+        <a href="/privacy/" style="color: var(--text-2);">Privacy Policy</a>
+        <a href="/contact/" style="color: var(--text-2);">Contact Us</a>
+        <a href="/terms/" style="color: var(--text-2);">Terms of Service</a>
+      </div>
+      <p>&copy; Cipher – Free Online Security & File Tools. 100% Client-Side Executable.</p>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script>
+    // Search & Filter JavaScript
+    document.addEventListener('DOMContentLoaded', () => {
+      const toolSearch = document.getElementById('toolSearch');
+      const categoryTabs = document.getElementById('categoryTabs');
+      const toolCards = document.querySelectorAll('.tool-card');
+
+      let currentCategory = 'all';
+
+      function filterTools() {
+        const query = toolSearch.value.toLowerCase().trim();
+
+        toolCards.forEach(card => {
+          const category = card.dataset.category;
+          const searchKeywords = card.dataset.name.toLowerCase();
+
+          const matchesCategory = (currentCategory === 'all' || category === currentCategory);
+          const matchesSearch = (!query || searchKeywords.includes(query));
+
+          if (matchesCategory && matchesSearch) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      }
+
+      toolSearch.addEventListener('input', filterTools);
+
+      categoryTabs.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          categoryTabs.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentCategory = btn.dataset.category;
+          filterTools();
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
